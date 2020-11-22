@@ -1,8 +1,15 @@
+import React from "react";
 import logo from "./logo.svg";
 import "./App.css";
 
+import Board from "./components/Board";
+
 const App = () => {
-  return <div>init</div>;
+  return (
+    <div class="Main">
+      <Board />
+    </div>
+  );
 };
 
 export default App;

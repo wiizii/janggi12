@@ -1,0 +1,24 @@
+.container {
+  height: 480px;
+  width: 360px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr 1fr;
+}
+
+.item {
+  border: 1px solid black;
+  text-align: center;
+}
+
+.red {
+  background-color: #f5a9a9;
+}
+
+.green {
+  background-color: #bcf5a9;
+}
+
+.yellow {
+  background-color: #f3e2a9;
+}
