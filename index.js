@@ -1,5 +1,9 @@
 const canvas = document.getElementById("canvas");
-var ctx = canvas.getContext("2d");
+const ctx = canvas.getContext("2d");
+
+//card variable
+const cardWidth = 100;
+const cardHeight = 100;
 
 //board variable
 const boardRowCount = 4;
@@ -19,16 +23,14 @@ for (var r = 0; r < boardRowCount; r++) {
   }
 }
 
-function drawPiece() {
+function drawCard(num, x, y) {
   var img = new Image();
-  img.addEventListener(
-    "load",
-    function () {
-      ctx.drawImage(img, 0, 0, 100, 100);
-    },
-    false
-  );
-  img.src = "./assets/card(GH).png";
+  img.onload = function () {
+    ctx.drawImage(img, x, y, cardWidth, cardHeight);
+    console.log("asdf");
+  };
+  img.src = "./assets/" + (num + "") + ".png";
+  console.log(img.src);
 }
 
 function drawBoard() {
@@ -51,8 +53,9 @@ function drawBoard() {
   }
 }
 
-function draw() {
+function drawInit() {
   drawBoard();
+  drawCard(1, 50, 50);
 }
 
-draw();
+drawInit();
