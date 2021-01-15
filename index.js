@@ -2,6 +2,9 @@ const canvas = document.getElementById("canvas");
 const boardCtx = canvas.getContext("2d");
 const ctx = canvas.getContext("2d");
 
+//game variable
+var turn = 0; //0 : green,  1 : red
+
 //card variable
 const cardSize = 110;
 
@@ -41,22 +44,26 @@ function drawCard(num, x, y) {
   img.src = "./assets/" + (num + "") + ".png";
 }
 
+function drawTile(x, y, size, r) {
+  boardCtx.beginPath();
+  boardCtx.rect(x, y, size, size);
+  if (r == 0) {
+    boardCtx.fillStyle = "rgba(255,102,102,0.5)";
+  } else if (r == 3) {
+    boardCtx.fillStyle = "rgba(000,153,000,0.5)";
+  } else {
+    boardCtx.fillStyle = "rgba(255,204,102,0.5)";
+  }
+  boardCtx.fill();
+  boardCtx.strokeStyle = "#000000";
+  boardCtx.strokeRect(x, y, size, size);
+  boardCtx.closePath();
+}
+
 function drawBoard() {
   for (var r = 0; r < boardRowCount; r++) {
     for (var c = 0; c < boardColumnCount; c++) {
-      boardCtx.beginPath();
-      boardCtx.rect(board[r][c].x, board[r][c].y, boardSize, boardSize);
-      if (r == 0) {
-        boardCtx.fillStyle = "rgba(255,102,102,0.5)";
-      } else if (r == 3) {
-        boardCtx.fillStyle = "rgba(000,153,000,0.5)";
-      } else {
-        boardCtx.fillStyle = "rgba(255,204,102,0.5)";
-      }
-      boardCtx.fill();
-      boardCtx.strokeStyle = "#000000";
-      boardCtx.strokeRect(board[r][c].x, board[r][c].y, boardSize, boardSize);
-      boardCtx.closePath();
+      drawTile(board[r][c].x, board[r][c].y, boardSize, r);
       if (board[r][c].card != 0) {
         var cardX = board[r][c].x + (boardSize - cardSize) / 2;
         var cardY = board[r][c].y + (boardSize - cardSize) / 2;
@@ -66,24 +73,27 @@ function drawBoard() {
   }
 }
 
-canvas.addEventListener("click", function (e) {
-  for (var r = 0; r < boardRowCount; r++) {
-    for (var c = 0; c < boardColumnCount; c++) {
-      var x = e.layerX,
-        y = e.layerY;
-      var sx = board[r][c].x,
-        ex = board[r][c].x + boardSize;
-      var sy = board[r][c].y,
-        ey = board[r][c].y + boardSize;
-      if (sx < x && x < ex && sy < y && y < ey) {
-        var cardX = board[r][c].x + (boardSize - cardSize) / 2;
-        var cardY = board[r][c].y + (boardSize - cardSize) / 2;
-        drawCard(1, cardX, cardY);
-        console.log(sx, sy, boardSize);
+var isSel = 0;
+var selCard = 0;
+if (!isSel) {
+  canvas.addEventListener("click", function (e) {
+    for (var r = 0; r < boardRowCount; r++) {
+      for (var c = 0; c < boardColumnCount; c++) {
+        var x = e.layerX;
+        var y = e.layerY;
+        var sx = board[r][c].x;
+        var ex = board[r][c].x + boardSize;
+        var sy = board[r][c].y;
+        var ey = board[r][c].y + boardSize;
+        if (sx < x && x < ex && sy < y && y < ey)
+          if (board[r][c].card) {
+            selCard = board[r][c].card;
+            console.log(selCard);
+            break;
+          }
       }
     }
-  }
-});
+  });
+}
 
-//boardCtx.clearRect(0, 0, canvas.width, canvas.height);
 drawBoard();
