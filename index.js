@@ -22,6 +22,9 @@ for (var r = 0; r < boardRowCount; r++) {
     var boardX = c * boardSize + boardOffsetLeft;
     var boardY = r * boardSize + boardOffsetTop;
     board[r][c] = { x: boardX, y: boardY, card: 0 };
+    if (r == 0) board[r][c].color = "red";
+    else if (r == 3) board[r][c].color = "green";
+    else board[r][c].color = "yellow";
   }
 }
 //init card
@@ -36,42 +39,38 @@ for (var r = 0; r < boardRowCount; r++) {
   board[3][2].card = 2;
 }
 
-function drawCard(num, x, y) {
-  var img = new Image();
-  img.onload = function () {
-    ctx.drawImage(img, x, y, cardSize, cardSize);
-  };
-  img.src = "./assets/" + (num + "") + ".png";
-}
-
-function drawTile(x, y, size, r) {
-  boardCtx.beginPath();
-  boardCtx.rect(x, y, size, size);
-  if (r == 0) {
-    boardCtx.fillStyle = "rgba(255,102,102,0.5)";
-  } else if (r == 3) {
-    boardCtx.fillStyle = "rgba(000,153,000,0.5)";
-  } else {
-    boardCtx.fillStyle = "rgba(255,204,102,0.5)";
-  }
-  boardCtx.fill();
-  boardCtx.strokeStyle = "#000000";
-  boardCtx.strokeRect(x, y, size, size);
-  boardCtx.closePath();
-}
-
-function drawBoard() {
+function init() {
   for (var r = 0; r < boardRowCount; r++) {
     for (var c = 0; c < boardColumnCount; c++) {
-      drawTile(board[r][c].x, board[r][c].y, boardSize, r);
-      if (board[r][c].card != 0) {
-        var cardX = board[r][c].x + (boardSize - cardSize) / 2;
-        var cardY = board[r][c].y + (boardSize - cardSize) / 2;
-        drawCard(board[r][c].card, cardX, cardY);
-      }
+      drawTile(board[r][c]);
+      if (board[r][c].card != 0) drawCard(board[r][c]);
     }
   }
 }
+
+function drawCard(board) {
+  var img = new Image();
+  var cardX = board.x + (boardSize - cardSize) / 2;
+  var cardY = board.y + (boardSize - cardSize) / 2;
+  img.onload = function () {
+    ctx.drawImage(img, cardX, cardY, cardSize, cardSize);
+  };
+  img.src = "./assets/" + (board.card + "") + ".png";
+}
+
+function drawTile(board) {
+  boardCtx.beginPath();
+  boardCtx.rect(board.x, board.y, boardSize, boardSize);
+  if (board.color == "red") boardCtx.fillStyle = "rgba(255,102,102,0.5)";
+  else if (board.color == "green") boardCtx.fillStyle = "rgba(000,153,000,0.5)";
+  else boardCtx.fillStyle = "rgba(255,204,102,0.5)";
+  boardCtx.fill();
+  boardCtx.strokeStyle = "#000000";
+  boardCtx.strokeRect(board.x, board.y, boardSize, boardSize);
+  boardCtx.closePath();
+}
+
+// function drawCardMovement(num) {}
 
 //current selected variable
 var isSel = 0;
@@ -121,10 +120,8 @@ canvas.addEventListener("click", function (e) {
               boardSize,
               boardSize
             );
-            drawTile(board[selR][selC].x, board[selR][selC].y, boardSize, selR);
-            var cardX = board[r][c].x + (boardSize - cardSize) / 2;
-            var cardY = board[r][c].y + (boardSize - cardSize) / 2;
-            drawCard(board[r][c].card, cardX, cardY);
+            drawTile(board[selR][selC]);
+            drawCard(board[r][c]);
             isSel = 0;
             break;
           }
@@ -134,4 +131,4 @@ canvas.addEventListener("click", function (e) {
   }
 });
 
-drawBoard();
+init();
