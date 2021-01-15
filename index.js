@@ -40,37 +40,41 @@ for (var r = 0; r < boardRowCount; r++) {
 }
 
 function init() {
-  for (var r = 0; r < boardRowCount; r++) {
-    for (var c = 0; c < boardColumnCount; c++) {
-      drawTile(board[r][c]);
-      if (board[r][c].card != 0) drawCard(board[r][c]);
-    }
-  }
+  for (var r = 0; r < boardRowCount; r++)
+    for (var c = 0; c < boardColumnCount; c++) drawTile(r, c);
 }
 
-function drawCard(board) {
+function drawCard(r, c) {
   var img = new Image();
-  var cardX = board.x + (boardSize - cardSize) / 2;
-  var cardY = board.y + (boardSize - cardSize) / 2;
+  var cardX = board[r][c].x + (boardSize - cardSize) / 2;
+  var cardY = board[r][c].y + (boardSize - cardSize) / 2;
   img.onload = function () {
     ctx.drawImage(img, cardX, cardY, cardSize, cardSize);
   };
-  img.src = "./assets/" + (board.card + "") + ".png";
+  img.src = "./assets/" + (board[r][c].card + "") + ".png";
 }
 
-function drawTile(board) {
+function drawTile(r, c) {
   boardCtx.beginPath();
-  boardCtx.rect(board.x, board.y, boardSize, boardSize);
-  if (board.color == "red") boardCtx.fillStyle = "rgba(255,102,102,0.5)";
-  else if (board.color == "green") boardCtx.fillStyle = "rgba(000,153,000,0.5)";
-  else boardCtx.fillStyle = "rgba(255,204,102,0.5)";
+  boardCtx.rect(board[r][c].x, board[r][c].y, boardSize, boardSize);
+  if (board[r][c].color == "red") boardCtx.fillStyle = "#FFA07A";
+  else if (board[r][c].color == "green") boardCtx.fillStyle = "#9ACD32";
+  else if (board[r][c].color == "yellow") boardCtx.fillStyle = "#FAFAD2";
+  else boardCtx.fillStyle = "rgba(255,051,255,0.5)";
   boardCtx.fill();
   boardCtx.strokeStyle = "#000000";
-  boardCtx.strokeRect(board.x, board.y, boardSize, boardSize);
+  boardCtx.strokeRect(board[r][c].x, board[r][c].y, boardSize, boardSize);
   boardCtx.closePath();
+  if (board[r][c].card) drawCard(r, c);
 }
 
-// function drawCardMovement(num) {}
+function drawSelected(r, c) {
+  board[r][c].color = "purple";
+  drawTile(r, c);
+  if (r == 0) board[r][c].color = "red";
+  else if (r == 3) board[r][c].color = "green";
+  else board[r][c].color = "yellow";
+}
 
 //current selected variable
 var isSel = 0;
@@ -95,6 +99,7 @@ canvas.addEventListener("click", function (e) {
             selR = r;
             selC = c;
             isSel = 1;
+            drawSelected(r, c);
             break;
           }
         }
@@ -114,14 +119,8 @@ canvas.addEventListener("click", function (e) {
             alert("same position");
           } else {
             board[r][c].card = selCard;
-            ctx.clearRect(
-              board[selR][selC].x,
-              board[selR][selC].y,
-              boardSize,
-              boardSize
-            );
-            drawTile(board[selR][selC]);
-            drawCard(board[r][c]);
+            drawTile(selR, selC);
+            drawTile(r, c);
             isSel = 0;
             break;
           }
