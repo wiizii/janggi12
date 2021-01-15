@@ -73,10 +73,14 @@ function drawBoard() {
   }
 }
 
+//current selected variable
 var isSel = 0;
 var selCard = 0;
-if (!isSel) {
-  canvas.addEventListener("click", function (e) {
+var selR = 0;
+var selC = 0;
+
+canvas.addEventListener("click", function (e) {
+  if (!isSel) {
     for (var r = 0; r < boardRowCount; r++) {
       for (var c = 0; c < boardColumnCount; c++) {
         var x = e.layerX;
@@ -85,15 +89,49 @@ if (!isSel) {
         var ex = board[r][c].x + boardSize;
         var sy = board[r][c].y;
         var ey = board[r][c].y + boardSize;
-        if (sx < x && x < ex && sy < y && y < ey)
+        if (sx < x && x < ex && sy < y && y < ey) {
           if (board[r][c].card) {
             selCard = board[r][c].card;
-            console.log(selCard);
+            board[r][c].card = 0;
+            selR = r;
+            selC = c;
+            isSel = 1;
             break;
           }
+        }
       }
     }
-  });
-}
+  } else {
+    for (var r = 0; r < boardRowCount; r++) {
+      for (var c = 0; c < boardColumnCount; c++) {
+        var x = e.layerX;
+        var y = e.layerY;
+        var sx = board[r][c].x;
+        var ex = board[r][c].x + boardSize;
+        var sy = board[r][c].y;
+        var ey = board[r][c].y + boardSize;
+        if (sx < x && x < ex && sy < y && y < ey) {
+          if (selR == r && selC == c) {
+            alert("same position");
+          } else {
+            board[r][c].card = selCard;
+            ctx.clearRect(
+              board[selR][selC].x,
+              board[selR][selC].y,
+              boardSize,
+              boardSize
+            );
+            drawTile(board[selR][selC].x, board[selR][selC].y, boardSize, selR);
+            var cardX = board[r][c].x + (boardSize - cardSize) / 2;
+            var cardY = board[r][c].y + (boardSize - cardSize) / 2;
+            drawCard(board[r][c].card, cardX, cardY);
+            isSel = 0;
+            break;
+          }
+        }
+      }
+    }
+  }
+});
 
 drawBoard();
