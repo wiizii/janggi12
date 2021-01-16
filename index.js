@@ -97,6 +97,80 @@ function getPos(e) {
   return pos;
 }
 
+function enableCardMove(r, c) {
+  var dr = [-1, -1, 0, 1, 1, 1, 0, -1];
+  var dc = [0, -1, -1, -1, 0, 1, 1, 1];
+  var num = GAMESTAT.selCard;
+  var nnum = board[r][c].card;
+  var sel = num % 5 ? num % 5 : 5;
+  switch (sel) {
+    case 1:
+      for (var i = 0; i < 8; i++) {
+        var nr = GAMESTAT.pos.r + dr[i];
+        var nc = GAMESTAT.pos.c + dc[i];
+        if (
+          ((num <= 5 && nnum > 5) || (nnum <= 5 && num > 5) || nnum == 0) &&
+          nr == r &&
+          nc == c
+        )
+          return true;
+      }
+      break;
+    case 2:
+      for (var i = 0; i < 8; i++) {
+        if (i & 1) continue;
+        var nr = GAMESTAT.pos.r + dr[i];
+        var nc = GAMESTAT.pos.c + dc[i];
+        if (
+          ((num <= 5 && nnum > 5) || (nnum <= 5 && num > 5) || nnum == 0) &&
+          nr == r &&
+          nc == c
+        )
+          return true;
+      }
+      break;
+    case 3:
+      for (var i = 0; i < 8; i++) {
+        if ((i & 1) == 0) continue;
+        var nr = GAMESTAT.pos.r + dr[i];
+        var nc = GAMESTAT.pos.c + dc[i];
+        if (
+          ((num <= 5 && nnum > 5) || (nnum <= 5 && num > 5) || nnum == 0) &&
+          nr == r &&
+          nc == c
+        )
+          return true;
+      }
+      break;
+    case 4:
+      var nr = GAMESTAT.pos.r + dr[0];
+      var nc = GAMESTAT.pos.c + dc[0];
+      if (
+        ((num <= 5 && nnum > 5) || (nnum <= 5 && num > 5) || nnum == 0) &&
+        nr == r &&
+        nc == c
+      )
+        return true;
+      break;
+    case 5:
+      for (var i = 0; i < 8; i++) {
+        if (i == 3 || i == 5) continue;
+        var nr = GAMESTAT.pos.r + dr[i];
+        var nc = GAMESTAT.pos.c + dc[i];
+        if (
+          ((num <= 5 && nnum > 5) || (nnum <= 5 && num > 5) || nnum == 0) &&
+          nr == r &&
+          nc == c
+        )
+          return true;
+      }
+      break;
+    default:
+      break;
+  }
+  return false;
+}
+
 //////////////////////////////////////////////////////////
 /////////////////////  game logic  ///////////////////////
 //////////////////////////////////////////////////////////
@@ -126,11 +200,14 @@ canvas_card.addEventListener("click", function (e) {
       drawCard(pos.r, pos.c);
       GAMESTAT.isSel = 0;
     } else {
-      board[GAMESTAT.pos.r][GAMESTAT.pos.c].card = 0;
-      board[pos.r][pos.c].card = GAMESTAT.selCard;
-      undraw(GAMESTAT.pos.r, GAMESTAT.pos.c);
-      drawCard(pos.r, pos.c);
-      GAMESTAT.isSel = 0;
+      if (enableCardMove(pos.r, pos.c)) {
+        console.log("test");
+        board[GAMESTAT.pos.r][GAMESTAT.pos.c].card = 0;
+        board[pos.r][pos.c].card = GAMESTAT.selCard;
+        undraw(GAMESTAT.pos.r, GAMESTAT.pos.c);
+        drawCard(pos.r, pos.c);
+        GAMESTAT.isSel = 0;
+      }
     }
   }
 });
