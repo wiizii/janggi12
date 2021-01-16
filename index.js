@@ -113,14 +113,13 @@ var GAMESTAT = {
 
 canvas_card.addEventListener("click", function (e) {
   var pos = getPos(e);
-  if (pos.r == undefined || pos.c == undefined || !board[pos.r][pos.c].card)
-    return;
+  if (pos.r == undefined || pos.c == undefined) return;
   if (!GAMESTAT.isSel) {
+    if (!board[pos.r][pos.c].card) return;
     GAMESTAT.isSel = 1;
     drawSelected(pos.r, pos.c);
     GAMESTAT.pos = pos;
     GAMESTAT.selCard = board[pos.r][pos.c].card;
-    console.log(GAMESTAT.selCard);
   } else {
     if (GAMESTAT.pos.r == pos.r && GAMESTAT.pos.c == pos.c) {
       undraw(pos.r, pos.c);
