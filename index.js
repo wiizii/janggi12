@@ -143,8 +143,14 @@ function enableCardMove(r, c) {
       }
       break;
     case 4:
-      var nr = GAMESTAT.pos.r + dr[0];
-      var nc = GAMESTAT.pos.c + dc[0];
+      var nr, nc;
+      if (GAMESTAT.selCard == 4) {
+        nr = GAMESTAT.pos.r + dr[0];
+        nc = GAMESTAT.pos.c + dc[0];
+      } else if (GAMESTAT.selCard == 9) {
+        nr = GAMESTAT.pos.r + dr[4];
+        nc = GAMESTAT.pos.c + dc[4];
+      }
       if (
         ((num <= 5 && nnum > 5) || (nnum <= 5 && num > 5) || nnum == 0) &&
         nr == r &&
@@ -153,8 +159,16 @@ function enableCardMove(r, c) {
         return true;
       break;
     case 5:
+      var r1, r2;
+      if (GAMESTAT.selCard == 5) {
+        r1 = 3;
+        r2 = 5;
+      } else if (GAMESTAT.selCard == 10) {
+        r1 = 1;
+        r2 = 7;
+      }
       for (var i = 0; i < 8; i++) {
-        if (i == 3 || i == 5) continue;
+        if (i == r1 || i == r2) continue;
         var nr = GAMESTAT.pos.r + dr[i];
         var nc = GAMESTAT.pos.c + dc[i];
         if (
@@ -201,7 +215,6 @@ canvas_card.addEventListener("click", function (e) {
       GAMESTAT.isSel = 0;
     } else {
       if (enableCardMove(pos.r, pos.c)) {
-        console.log("test");
         board[GAMESTAT.pos.r][GAMESTAT.pos.c].card = 0;
         board[pos.r][pos.c].card = GAMESTAT.selCard;
         undraw(GAMESTAT.pos.r, GAMESTAT.pos.c);
