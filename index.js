@@ -3,9 +3,6 @@ const canvas_card = document.getElementById("card");
 const ctx_board = canvas_board.getContext("2d");
 const ctx_card = canvas_card.getContext("2d");
 
-//////////////////////////////////////////////////////////
-/////////////////////  draw func  ///////////////////////
-//////////////////////////////////////////////////////////
 const boardRowCount = 4;
 const boardColumnCount = 3;
 const boardSize = 130;
@@ -22,6 +19,10 @@ for (var r = 0; r < boardRowCount; r++) {
     board[r][c] = { x: boardX, y: boardY, card: 0 };
   }
 }
+
+//////////////////////////////////////////////////////////
+/////////////////////  draw func  ///////////////////////
+//////////////////////////////////////////////////////////
 
 function drawTile(r, c) {
   ctx_board.beginPath();
@@ -43,9 +44,8 @@ function drawSelected(r, c) {
   ctx_card.closePath();
 }
 
-function undrawSelected(r, c) {
+function undraw(r, c) {
   ctx_card.clearRect(board[r][c].x, board[r][c].y, boardSize, boardSize);
-  drawCard(r, c);
 }
 
 function drawCard(r, c) {
@@ -60,7 +60,7 @@ function drawCard(r, c) {
 }
 
 //////////////////////////////////////////////////////////
-///////////////////////   init   /////////////////////////
+//////////////////////  utility  ////////////////////////
 //////////////////////////////////////////////////////////
 
 function init() {
@@ -82,6 +82,21 @@ function init() {
   }
 }
 
+function getPos(e) {
+  var pos = { r, c };
+  for (var r = 0; r < boardRowCount; r++) {
+    for (var c = 0; c < boardColumnCount; c++) {
+      var sx = board[r][c].x;
+      var ex = board[r][c].x + boardSize;
+      var sy = board[r][c].y;
+      var ey = board[r][c].y + boardSize;
+      if (sx < e.layerX && e.layerX < ex && sy < e.layerY && e.layerY < ey)
+        (pos.r = r), (pos.c = c);
+    }
+  }
+  return pos;
+}
+
 //////////////////////////////////////////////////////////
 /////////////////////  game logic  ///////////////////////
 //////////////////////////////////////////////////////////
@@ -93,26 +108,30 @@ var GAMESTAT = {
   turn: 0, //0: green, 1: red
   isSel: 0,
   selCard: 0,
-  r: -1,
-  c: -1,
+  pos: { r, c },
 };
 
 canvas_card.addEventListener("click", function (e) {
-  for (var r = 0; r < boardRowCount; r++) {
-    for (var c = 0; c < boardColumnCount; c++) {
-      var sx = board[r][c].x;
-      var ex = board[r][c].x + boardSize;
-      var sy = board[r][c].y;
-      var ey = board[r][c].y + boardSize;
-      if (sx < e.layerX && e.layerX < ex && sy < e.layerY && e.layerY < ey) {
-        if (!GAMESTAT.isSel) {
-          drawSelected(r, c);
-          GAMESTAT.isSel = 1;
-        } else {
-          undrawSelected(r, c);
-          GAMESTAT.isSel = 0;
-        }
-      }
+  var pos = getPos(e);
+  if (pos.r == undefined || pos.c == undefined || !board[pos.r][pos.c].card)
+    return;
+  if (!GAMESTAT.isSel) {
+    GAMESTAT.isSel = 1;
+    drawSelected(pos.r, pos.c);
+    GAMESTAT.pos = pos;
+    GAMESTAT.selCard = board[pos.r][pos.c].card;
+    console.log(GAMESTAT.selCard);
+  } else {
+    if (GAMESTAT.pos.r == pos.r && GAMESTAT.pos.c == pos.c) {
+      undraw(pos.r, pos.c);
+      drawCard(pos.r, pos.c);
+      GAMESTAT.isSel = 0;
+    } else {
+      board[GAMESTAT.pos.r][GAMESTAT.pos.c].card = 0;
+      board[pos.r][pos.c].card = GAMESTAT.selCard;
+      undraw(GAMESTAT.pos.r, GAMESTAT.pos.c);
+      drawCard(pos.r, pos.c);
+      GAMESTAT.isSel = 0;
     }
   }
 });
