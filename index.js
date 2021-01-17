@@ -20,6 +20,23 @@ for (var r = 0; r < boardRowCount; r++) {
   }
 }
 
+const poroCount = 6;
+const poroSize = (boardSize * 3) / 6;
+const poroOffsetTop = 0;
+const poroOffsetBottom = canvas_board.height - poroSize;
+const poroOffsetLeft = (canvas_board.width - boardSize * 3) / 2;
+
+var redPoro = [];
+var greenPoro = [];
+
+for (var i = 0; i < poroCount; i++) {
+  var poroX = i * poroSize + poroOffsetLeft;
+  var poroRedY = poroOffsetTop;
+  var poroGreenY = poroOffsetBottom;
+  redPoro[i] = { x: poroX, y: poroRedY, card: 1 };
+  greenPoro[i] = { x: poroX, y: poroGreenY, card: 1 };
+}
+
 //////////////////////////////////////////////////////////
 /////////////////////  draw func  ///////////////////////
 //////////////////////////////////////////////////////////
@@ -33,6 +50,14 @@ function drawTile(r, c) {
   ctx_board.fill();
   ctx_board.strokeStyle = "#000000";
   ctx_board.strokeRect(board[r][c].x, board[r][c].y, boardSize, boardSize);
+  ctx_board.closePath();
+}
+
+function drawPoroTile(poro) {
+  ctx_board.beginPath();
+  ctx_board.rect(poro.x, poro.y, poroSize, poroSize);
+  ctx_board.strokeStyle = "#000000";
+  ctx_board.strokeRect(poro.x, poro.y, poroSize, poroSize);
   ctx_board.closePath();
 }
 
@@ -59,8 +84,19 @@ function drawCard(r, c) {
   img.src = "./assets/" + (board[r][c].card + "") + ".png";
 }
 
+function drawPoro(i) {
+  var img = new Image();
+  var x = [i].x;
+  var y = greenPoro[i].y;
+  var card = greenPoro[i].card;
+  img.onload = function () {
+    ctx_card.drawImage(img, x, y, poroSize, poroSize);
+  };
+  img.src = "./assets/" + (card + "") + ".png";
+}
+
 //////////////////////////////////////////////////////////
-//////////////////////  utility  ////////////////////////
+//////////////////////  utility  /////////////////////////
 //////////////////////////////////////////////////////////
 
 function init() {
@@ -80,6 +116,11 @@ function init() {
       drawCard(r, c);
     }
   }
+  for (var i = 0; i < poroCount; i++) {
+    drawPoroTile(redPoro[i]);
+    drawPoroTile(greenPoro[i]);
+  }
+  drawPoro(0);
 }
 
 function getPos(e) {
