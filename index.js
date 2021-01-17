@@ -100,14 +100,15 @@ function getPos(e) {
 function enableCardMove(r, c) {
   var dr = [-1, -1, 0, 1, 1, 1, 0, -1];
   var dc = [0, -1, -1, -1, 0, 1, 1, 1];
-  var num = GAMESTAT.selCard;
+  var num = gameManager.getSelectCard();
+  var pos = gameManager.getPos();
   var nnum = board[r][c].card;
   var sel = num % 5 ? num % 5 : 5;
   switch (sel) {
     case 1:
       for (var i = 0; i < 8; i++) {
-        var nr = GAMESTAT.pos.r + dr[i];
-        var nc = GAMESTAT.pos.c + dc[i];
+        var nr = pos.r + dr[i];
+        var nc = pos.c + dc[i];
         if (
           ((num <= 5 && nnum > 5) || (nnum <= 5 && num > 5) || nnum == 0) &&
           nr == r &&
@@ -119,8 +120,8 @@ function enableCardMove(r, c) {
     case 2:
       for (var i = 0; i < 8; i++) {
         if (i & 1) continue;
-        var nr = GAMESTAT.pos.r + dr[i];
-        var nc = GAMESTAT.pos.c + dc[i];
+        var nr = pos.r + dr[i];
+        var nc = pos.c + dc[i];
         if (
           ((num <= 5 && nnum > 5) || (nnum <= 5 && num > 5) || nnum == 0) &&
           nr == r &&
@@ -132,8 +133,8 @@ function enableCardMove(r, c) {
     case 3:
       for (var i = 0; i < 8; i++) {
         if ((i & 1) == 0) continue;
-        var nr = GAMESTAT.pos.r + dr[i];
-        var nc = GAMESTAT.pos.c + dc[i];
+        var nr = pos.r + dr[i];
+        var nc = pos.c + dc[i];
         if (
           ((num <= 5 && nnum > 5) || (nnum <= 5 && num > 5) || nnum == 0) &&
           nr == r &&
@@ -144,12 +145,12 @@ function enableCardMove(r, c) {
       break;
     case 4:
       var nr, nc;
-      if (GAMESTAT.selCard == 4) {
-        nr = GAMESTAT.pos.r + dr[0];
-        nc = GAMESTAT.pos.c + dc[0];
-      } else if (GAMESTAT.selCard == 9) {
-        nr = GAMESTAT.pos.r + dr[4];
-        nc = GAMESTAT.pos.c + dc[4];
+      if (num == 4) {
+        nr = pos.r + dr[0];
+        nc = pos.c + dc[0];
+      } else if (num == 9) {
+        nr = pos.r + dr[4];
+        nc = pos.c + dc[4];
       }
       if (
         ((num <= 5 && nnum > 5) || (nnum <= 5 && num > 5) || nnum == 0) &&
@@ -160,17 +161,17 @@ function enableCardMove(r, c) {
       break;
     case 5:
       var r1, r2;
-      if (GAMESTAT.selCard == 5) {
+      if (num == 5) {
         r1 = 3;
         r2 = 5;
-      } else if (GAMESTAT.selCard == 10) {
+      } else if (num == 10) {
         r1 = 1;
         r2 = 7;
       }
       for (var i = 0; i < 8; i++) {
         if (i == r1 || i == r2) continue;
-        var nr = GAMESTAT.pos.r + dr[i];
-        var nc = GAMESTAT.pos.c + dc[i];
+        var nr = pos.r + dr[i];
+        var nc = pos.c + dc[i];
         if (
           ((num <= 5 && nnum > 5) || (nnum <= 5 && num > 5) || nnum == 0) &&
           nr == r &&
@@ -192,35 +193,72 @@ function enableCardMove(r, c) {
 init();
 
 //current status with singleton
-var GAMESTAT = {
+var gameManager = {
   turn: 0, //0: green, 1: red
-  isSel: 0,
-  selCard: 0,
+  stat: false, //false: not select, true: select
+  selectCard: 0,
   pos: { r, c },
+  toggleTurn: function () {
+    if (this.turn) this.turn = 0;
+    else this.turn = 1;
+  },
+  toggleStat: function () {
+    if (this.stat) this.stat = 0;
+    else this.stat = 1;
+  },
+  getPos: function () {
+    return this.pos;
+  },
+  setPos: function (pos) {
+    this.pos = pos;
+  },
+  initPos: function () {
+    this.pos.r = -1;
+    this.pos.c = -1;
+  },
+  getSelectCard: function () {
+    return this.selectCard;
+  },
+  setSelectCard: function (num) {
+    this.selectCard = num;
+  },
+  setSelect: function (pos) {
+    if (this.pos.r == pos.r && this.pos.c == pos.c) {
+      undraw(pos.r, pos.c);
+      drawCard(pos.r, pos.c);
+      this.toggleStat();
+      this.initPos();
+      return;
+    }
+    if (this.stat) return;
+    var selCard = board[pos.r][pos.c].card;
+    if (
+      selCard == 0 ||
+      (this.turn && selCard <= 5) ||
+      (!this.turn && selCard > 5)
+    )
+      return;
+    drawSelected(pos.r, pos.c);
+    this.toggleStat();
+    this.setPos(pos);
+    this.setSelectCard(selCard);
+  },
+  setCardMove: function (pos) {
+    if (enableCardMove(pos.r, pos.c)) {
+      board[this.pos.r][this.pos.c].card = 0;
+      board[pos.r][pos.c].card = gameManager.selectCard;
+      undraw(this.pos.r, this.pos.c);
+      drawCard(pos.r, pos.c);
+      this.toggleStat();
+      this.toggleTurn();
+      this.initPos();
+    }
+  },
 };
 
 canvas_card.addEventListener("click", function (e) {
   var pos = getPos(e);
   if (pos.r == undefined || pos.c == undefined) return;
-  if (!GAMESTAT.isSel) {
-    if (!board[pos.r][pos.c].card) return;
-    GAMESTAT.isSel = 1;
-    drawSelected(pos.r, pos.c);
-    GAMESTAT.pos = pos;
-    GAMESTAT.selCard = board[pos.r][pos.c].card;
-  } else {
-    if (GAMESTAT.pos.r == pos.r && GAMESTAT.pos.c == pos.c) {
-      undraw(pos.r, pos.c);
-      drawCard(pos.r, pos.c);
-      GAMESTAT.isSel = 0;
-    } else {
-      if (enableCardMove(pos.r, pos.c)) {
-        board[GAMESTAT.pos.r][GAMESTAT.pos.c].card = 0;
-        board[pos.r][pos.c].card = GAMESTAT.selCard;
-        undraw(GAMESTAT.pos.r, GAMESTAT.pos.c);
-        drawCard(pos.r, pos.c);
-        GAMESTAT.isSel = 0;
-      }
-    }
-  }
+  gameManager.setSelect(pos);
+  gameManager.setCardMove(pos);
 });
