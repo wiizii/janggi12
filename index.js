@@ -57,6 +57,7 @@ function drawPoroTile(poro) {
   ctx_board.beginPath();
   ctx_board.rect(poro.x, poro.y, poroSize, poroSize);
   ctx_board.strokeStyle = "#000000";
+  //나중에 테두리를 지워버리자
   ctx_board.strokeRect(poro.x, poro.y, poroSize, poroSize);
   ctx_board.closePath();
 }
@@ -84,15 +85,18 @@ function drawCard(r, c) {
   img.src = "./assets/" + (board[r][c].card + "") + ".png";
 }
 
-function drawPoro(i) {
-  var img = new Image();
-  var x = [i].x;
-  var y = greenPoro[i].y;
-  var card = greenPoro[i].card;
-  img.onload = function () {
-    ctx_card.drawImage(img, x, y, poroSize, poroSize);
-  };
-  img.src = "./assets/" + (card + "") + ".png";
+function drawPoro(poro) {
+  //closure 문제 해결해야함
+  for (var i = 0; i < poroSize; i++) {
+    var img = new Image();
+    var x = poro[i].x;
+    var y = poro[i].y;
+    var card = poro[i].card;
+    img.onload = (function () {
+      ctx_card.drawImage(img, x, y, poroSize, poroSize);
+    })();
+    img.src = "./assets/" + (card + "") + ".png";
+  }
 }
 
 //////////////////////////////////////////////////////////
@@ -120,7 +124,7 @@ function init() {
     drawPoroTile(redPoro[i]);
     drawPoroTile(greenPoro[i]);
   }
-  drawPoro(0);
+  drawPoro(redPoro);
 }
 
 function getPos(e) {
