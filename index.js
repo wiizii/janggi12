@@ -70,8 +70,22 @@ function drawSelected(r, c) {
 	ctx_card.closePath();
 }
 
+function drawPoroSelected(team, i) {
+	ctx_card.beginPath();
+	if (team == 0) ctx_card.rect(greenPoro[i].x, greenPoro[i].y, poroSize, poroSize);
+	else ctx_card.rect(redPoro[i].x, redPoro[i].y, poroSize, poroSize);
+	ctx_card.fillStyle = 'rgba(240,120,220,0.5)';
+	ctx_card.fill();
+	ctx_card.closePath();
+}
+
 function undraw(r, c) {
 	ctx_card.clearRect(board[r][c].x, board[r][c].y, boardSize, boardSize);
+}
+
+function poroUndraw(team, i) {
+	if (team == 0) ctx_card.clearRect(greenPoro[i].x, greenPoro[i].y, poroSize, poroSize);
+	else ctx_card.clearRect(redPoro[i].x, redPoro[i].y, poroSize, poroSize);
 }
 
 function drawCard(r, c) {
@@ -87,6 +101,7 @@ function drawCard(r, c) {
 
 function drawPoro(poro) {
 	for (var i = 0; i < poroCount; i++) {
+		if (poro[i].card == 0) continue;
 		(function (i) {
 			var img = new Image();
 			var x = poro[i].x;
@@ -140,6 +155,18 @@ function getPos(e) {
 		}
 	}
 	return pos;
+}
+
+function getPoroPos(e, poro) {
+	var num;
+	for (var i = 0; i < poroCount; i++) {
+		var sx = poro[i].x;
+		var ex = poro[i].x + poroSize;
+		var sy = poro[i].y;
+		var ey = poro[i].y + poroSize;
+		if (sx < e.layerX && e.layerX < ex && sy < e.layerY && e.layerY < ey) num = i;
+	}
+	return num;
 }
 
 function enableCardMove(r, c) {
@@ -215,16 +242,16 @@ init();
 //current status with singleton
 var gameManager = {
 	turn: 0, //0: green, 1: red
-	stat: false, //false: not select, true: select
+	stat: 0, //0: not select, 1: select card, 2: select poro
 	selectCard: 0,
 	pos: { r, c },
+	poroPos: -1,
 	toggleTurn: function () {
 		if (this.turn) this.turn = 0;
 		else this.turn = 1;
 	},
-	toggleStat: function () {
-		if (this.stat) this.stat = 0;
-		else this.stat = 1;
+	setStat: function (num) {
+		this.stat = num;
 	},
 	getPos: function () {
 		return this.pos;
@@ -254,46 +281,93 @@ var gameManager = {
 		var selCard = board[pos.r][pos.c].card;
 		if (selCard == 0 || (this.turn && selCard <= 5) || (!this.turn && selCard > 5)) return;
 		drawSelected(pos.r, pos.c);
-		this.toggleStat();
+		this.setStat(1);
 		this.setPos(pos);
 		this.setSelectCard(selCard);
 	},
 	setCardMove: function (pos) {
-		if (enableCardMove(pos.r, pos.c)) {
-			board[this.pos.r][this.pos.c].card = 0;
-			//catch other card
-			if (board[pos.r][pos.c].card != 0) {
-				if (this.turn == 0) {
-					for (var i = 0; i < poroCount; i++) {
-						if (greenPoro[i].card == 0) {
-							greenPoro[i].card = board[pos.r][pos.c].card - 5;
-							break;
+		if (this.stat == 0) return;
+		else if (this.stat == 1) {
+			if (enableCardMove(pos.r, pos.c)) {
+				board[this.pos.r][this.pos.c].card = 0;
+				//catch other card
+				if (board[pos.r][pos.c].card != 0) {
+					if (this.turn == 0) {
+						for (var i = 0; i < poroCount; i++) {
+							if (greenPoro[i].card == 0) {
+								greenPoro[i].card = board[pos.r][pos.c].card - 5;
+								break;
+							}
 						}
-					}
-					drawPoro(greenPoro);
-				} else {
-					for (var i = 0; i < poroCount; i++) {
-						if (redPoro[i].card == 0) {
-							redPoro[i].card = board[pos.r][pos.c].card + 5;
-							break;
+						drawPoro(greenPoro);
+					} else {
+						for (var i = 0; i < poroCount; i++) {
+							if (redPoro[i].card == 0) {
+								redPoro[i].card = board[pos.r][pos.c].card + 5;
+								break;
+							}
 						}
+						drawPoro(redPoro);
 					}
-					drawPoro(redPoro);
 				}
+				board[pos.r][pos.c].card = this.selectCard;
+				undraw(this.pos.r, this.pos.c);
+				drawCard(pos.r, pos.c);
+				this.setStat(0);
+				this.toggleTurn();
+				this.initPos();
 			}
-			board[pos.r][pos.c].card = gameManager.selectCard;
-			undraw(this.pos.r, this.pos.c);
+		} else {
+			//move poro
+			if (board[pos.r][pos.c].card != 0) return;
+			board[pos.r][pos.c].card = this.selectCard;
 			drawCard(pos.r, pos.c);
-			this.toggleStat();
-			this.toggleTurn();
+			if (this.turn) redPoro[this.poroPos].card = 0;
+			else greenPoro[this.poroPos].card = 0;
+			poroUndraw(this.turn, this.poroPos);
+			this.turn ? drawPoro(redPoro) : drawPoro(greenPoro);
+			this.setStat(0);
 			this.initPos();
+			this.poroPos = 0;
+			this.toggleTurn();
 		}
+	},
+	setPoroSelect: function (i) {
+		var card = this.turn ? redPoro[i].card : greenPoro[i].card;
+		if (card == 0) return;
+		if (this.selectCard == card) {
+			poroUndraw(this.turn, i);
+			this.turn ? drawPoro(redPoro) : drawPoro(greenPoro);
+			this.setStat(0);
+			this.initPos();
+			this.selectCard = -1;
+			this.poroPos = -1;
+			return;
+		}
+		if (this.stat) return;
+		if (this.turn) {
+			this.selectCard = redPoro[i].card;
+			drawPoroSelected(this.turn, i);
+		} else {
+			this.selectCard = greenPoro[i].card;
+			drawPoroSelected(this.turn, i);
+		}
+		console.log(this.selectCard);
+		this.poroPos = i;
+		this.setStat(2);
 	},
 };
 
 canvas_card.addEventListener('click', function (e) {
 	var pos = getPos(e);
-	if (pos.r == undefined || pos.c == undefined) return;
-	gameManager.setSelect(pos);
-	gameManager.setCardMove(pos);
+
+	if (pos.r == undefined || pos.c == undefined) {
+		var poroPos;
+		poroPos = gameManager.turn ? getPoroPos(e, redPoro) : getPoroPos(e, greenPoro);
+		if (poroPos == undefined) return;
+		gameManager.setPoroSelect(poroPos);
+	} else {
+		gameManager.setSelect(pos);
+		gameManager.setCardMove(pos);
+	}
 });
