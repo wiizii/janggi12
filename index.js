@@ -242,7 +242,7 @@ init();
 //current status with singleton
 var gameManager = {
 	turn: 0, //0: green, 1: red
-	stat: 0, //0: not select, 1: select card, 2: select poro
+	stat: 0, //0: not select, 1: select card, 2: select poro, 3: red Win, 4: green Win
 	selectCard: 0,
 	pos: { r, c },
 	poroPos: -1,
@@ -273,7 +273,7 @@ var gameManager = {
 		if (this.pos.r == pos.r && this.pos.c == pos.c) {
 			undraw(pos.r, pos.c);
 			drawCard(pos.r, pos.c);
-			this.toggleStat();
+			this.setStat(0);
 			this.initPos();
 			return;
 		}
@@ -292,10 +292,17 @@ var gameManager = {
 				board[this.pos.r][this.pos.c].card = 0;
 				//catch other card
 				if (board[pos.r][pos.c].card != 0) {
+					if (board[pos.r][pos.c].card == 1) {
+						this.setStat(3);
+					}
+					if (board[pos.r][pos.c].card == 6) {
+						this.setStat(4);
+					}
 					if (this.turn == 0) {
 						for (var i = 0; i < poroCount; i++) {
 							if (greenPoro[i].card == 0) {
 								greenPoro[i].card = board[pos.r][pos.c].card - 5;
+								if (greenPoro[i].card == 5) greenPoro[i].card--;
 								break;
 							}
 						}
@@ -304,6 +311,7 @@ var gameManager = {
 						for (var i = 0; i < poroCount; i++) {
 							if (redPoro[i].card == 0) {
 								redPoro[i].card = board[pos.r][pos.c].card + 5;
+								if (redPoro[i].card == 10) redPoro[i].card--;
 								break;
 							}
 						}
@@ -311,8 +319,18 @@ var gameManager = {
 					}
 				}
 				board[pos.r][pos.c].card = this.selectCard;
+				if ((!this.turn && pos.r == 0 && this.selectCard == 4) || (this.turn && pos.r == 3 && this.selectCard == 9))
+					board[pos.r][pos.c].card++;
 				undraw(this.pos.r, this.pos.c);
 				drawCard(pos.r, pos.c);
+				if (this.stat == 3) {
+					alert('Red Win!');
+					location.reload();
+				}
+				if (this.stat == 4) {
+					alert('Green Win!');
+					location.reload();
+				}
 				this.setStat(0);
 				this.toggleTurn();
 				this.initPos();
@@ -320,6 +338,14 @@ var gameManager = {
 		} else {
 			//move poro
 			if (board[pos.r][pos.c].card != 0) return;
+			if (this.turn && pos.r == 3) {
+				alert('You must select other tile');
+				return;
+			}
+			if (!this.turn && pos.r == 0) {
+				alert('You must select other tile');
+				return;
+			}
 			board[pos.r][pos.c].card = this.selectCard;
 			drawCard(pos.r, pos.c);
 			if (this.turn) redPoro[this.poroPos].card = 0;
