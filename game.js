@@ -233,6 +233,33 @@ function enableCardMove(r, c) {
 	return false;
 }
 
+function getRandomInt(min, max) {
+	min = Math.ceil(min);
+	max = Math.floor(max);
+	return Math.floor(Math.random() * (max - min)) + min;
+}
+
+function computer() {
+	var pos = { r: -1, c: -1 };
+	while (1) {
+		pos.r = getRandomInt(0, 4);
+		pos.c = getRandomInt(0, 3);
+		if (board[pos.r][pos.c].card > 5) break;
+	}
+	gameManager.setSelect(pos);
+
+	var movePos = { r: -1, c: -1 };
+	while (1) {
+		movePos.r = getRandomInt(0, 4);
+		movePos.c = getRandomInt(0, 3);
+		if (pos.r == movePos.r && pos.c == movePos.c) continue;
+		if (enableCardMove(movePos.r, movePos.c)) {
+			gameManager.setCardMove(movePos);
+			break;
+		}
+	}
+}
+
 //////////////////////////////////////////////////////////
 /////////////////////  game logic  ///////////////////////
 //////////////////////////////////////////////////////////
@@ -395,5 +422,8 @@ canvas_card.addEventListener('click', function (e) {
 	} else {
 		gameManager.setSelect(pos);
 		gameManager.setCardMove(pos);
+	}
+	if (gameManager.turn == 1) {
+		setTimeout(() => computer(), 100);
 	}
 });
