@@ -15,8 +15,11 @@ http.listen(port, () => {
 	console.log(`server on : http://localhost:${port}/`);
 });
 
+var rooms = {};
+
 io.on('connection', (socket) => {
-	console.log('user connected');
+	console.log('user connected: ', socket.id);
+
 	socket.on('disconnect', () => {
 		console.log('disconnected');
 	});
