@@ -18,11 +18,7 @@ https://master.d4ufee36oqvl3.amplifyapp.com/
 1. backend 로직 설정
 
 ## 추가예정
-<<<<<<< HEAD
 
 1. play with computer.
-=======
-1. play with computer. //with use Alpha–beta pruning https://ko.wikipedia.org/wiki/%EC%95%8C%ED%8C%8C-%EB%B2%A0%ED%83%80_%EA%B0%80%EC%A7%80%EC%B9%98%EA%B8%B0
->>>>>>> 9f9f61e087d4c3d72bcdd90f72bd726ff21958d6
 2. multiplay
 3. use A.I
