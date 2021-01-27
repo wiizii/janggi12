@@ -19,6 +19,10 @@ https://master.d4ufee36oqvl3.amplifyapp.com/
 
 ## 추가예정
 
+<<<<<<< HEAD
 1. play with computer.
+=======
+1. play with computer. //with use Alpha–beta pruning https://ko.wikipedia.org/wiki/%EC%95%8C%ED%8C%8C-%EB%B2%A0%ED%83%80_%EA%B0%80%EC%A7%80%EC%B9%98%EA%B8%B0
+>>>>>>> 3308cd01ef9f9c07725d499b22e37e113144d707
 2. multiplay
 3. use A.I
