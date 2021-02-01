@@ -4,7 +4,7 @@ v1.0.1-alpha
 
 ## play
 
-https://master.d4ufee36oqvl3.amplifyapp.com/
+update중.. 조금만 기다려주세요!
 
 ## preview
 
