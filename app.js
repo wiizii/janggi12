@@ -31,21 +31,25 @@ app.use((err, req, res, next) => {
 //////////////////////////////////////////
 //								socket								//
 //////////////////////////////////////////
-/*
-const io = require('socket.io')(http, {
-	cors: {
-		origin: 'http://localhost:3000',
-		methods: ['GET', 'POST'],
-	},
-});
+const io = require('socket.io')(http);
 
 var rooms = {};
 
-io.on('connection', (socket) => {
+const room1 = io.of('/room1');
+
+room1.on('connection', (socket) => {
+	room1.emit('news', { hello: 'connected' });
+});
+
+/*
+io.on('connection', async (socket) => {
+	//const userId = await fetchUserId(socket);
+	//socket.join(userId);
 	console.log('user connected: ', socket.id);
 
 	socket.on('disconnect', () => {
 		console.log('disconnected');
 	});
 });
+
 */

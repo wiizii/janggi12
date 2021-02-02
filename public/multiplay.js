@@ -1,13 +1,5 @@
-/*
-const socket = io('http://localhost:3000/', {
-	withCredentials: true,
-	extraHeaders: {
-		'my-custom-header': 'abcd',
-	},
-});
+const socket = io('/room1');
 
-socket.emit('joinroom', window.location.pathname);
-socket.on('new user', (data) => {
-	console.log('New user. Total users: ', data);
+socket.on('news', (data) => {
+	console.log(data.hello);
 });
-*/
