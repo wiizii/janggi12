@@ -1,5 +1,9 @@
-const socket = io('/room1');
+const btn = document.getElementById('generateBtn');
 
-socket.on('news', (data) => {
-	console.log(data.hello);
+btn.addEventListener('click', () => {
+	const socket = io('/room1');
+
+	socket.on('news', (data) => {
+		console.log(data);
+	});
 });
