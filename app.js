@@ -20,9 +20,9 @@ http.listen(port, () => {
 //////////////////////////////////////////
 const route = require('./routes/routes.js');
 app.use('/', route);
-app.use((req, res, next) => {
-	res.status(404).send('404 NOT FOUND');
-});
+// app.use((req, res, next) => {
+// 	res.status(404).send('404 NOT FOUND');
+// });
 app.use((err, req, res, next) => {
 	console.error(err.stack);
 	res.status(500).send('server error');
@@ -32,16 +32,26 @@ app.use((err, req, res, next) => {
 //								socket								//
 //////////////////////////////////////////
 const io = require('socket.io')(http);
+const room = io.of('/room');
 
-var rooms = {};
+io.on('connection', (socket) => {
+	console.log('socket 접속');
 
-const room1 = io.of('/room1');
+	var room = null;
 
-room1.on('connection', (socket) => {
-	console.log('connected');
-	room1.emit('news', { info: 'test' });
+	socket.on('join', (data) => {
+		room = data.room;
+		socket.join(room);
+		console.log(socket.rooms);
+		//socket.set('room', data.roomName);
+	});
+
+	socket.on('message', (data) => {
+		io.in(room).emit('message', data);
+		console.log(data);
+	});
 
 	socket.on('disconnect', () => {
-		console.log('disconnected');
+		console.log('room namespace 해제');
 	});
 });

@@ -21,4 +21,8 @@ router.get('/rule', (req, res) => {
 	res.render('rule.html');
 });
 
+router.get('/room/*', (req, res) => {
+	res.render('multiplay.html');
+});
+
 module.exports = router;

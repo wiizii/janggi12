@@ -11,7 +11,7 @@
       <div class="title">십 이 장 기</div>
       <input type="button" id="startbtn" value="컴퓨터대전" onclick="location.href='/computer'">
       <input type="button" id="startbtn" value="혼자놀기" onclick="location.href='./single'">
-      <input type="button" id="startbtn" value="멀티플레이 준비중..." onclick="location.href='./multiplay'">
+      <input type="button" id="multibtn" value="멀티플레이 방만들기">
       <input type="button" id="startbtn" value="게임설명" onclick="location.href='./rule'">
     </p>
     <a href='https://github.com/119wjw/janggi12' target='_blank' rel='noreferrer'>
@@ -19,6 +19,8 @@
     </a>
   </p>
       <div>ver: 1.0.0 -alpha</div>
+      <script src="/socket.io/socket.io.js"></script>
+      <script src="multiplay.js"></script>
     </div>
   </body>
 </html>
