@@ -1,7 +1,35 @@
+body {
+	margin: 0;
+	padding: 0;
+}
+
+.site-title-nav {
+	display: flex;
+	margin: 0;
+	padding: 0;
+	background-color: #dfdfdf;
+}
+
+.site-title {
+	margin: 15px;
+	padding: 5px;
+}
+
+#navbar {
+	display: flex;
+	margin: 0;
+	padding: 0;
+	align-items: center;
+}
+
+#navbar > section {
+	margin: 15px;
+	font-size: 1.2em;
+}
+
 .wrap {
 	position: relative;
 }
-
 canvas {
 	position: absolute;
 	top: 60px;
@@ -16,12 +44,12 @@ canvas {
 }
 
 #main {
+	float: left;
 	position: relative;
 	width: 600px;
 	height: 800px;
 	background-color: #dfdfdf;
 	top: 30px;
-	margin: 0 auto;
 	text-align: center;
 }
 
@@ -57,4 +85,8 @@ input {
 
 .multiplay_title {
 	margin-top: 100px;
+}
+
+.chat {
+	float: right;
 }
