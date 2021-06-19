@@ -1,26 +1,94 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>12장기</title>
-    <meta charset="utf-8" />
-    <link rel="stylesheet" href="main.css" />
-  </head>
-  <body>
-    <div id = "main">
-      <img class="title_img" src='./assets/1.png' alt="main_image" width="150" height="150">
-      <div class="title">십 이 장 기</div>
-      <input type="button" id="startbtn" value="컴퓨터대전" onclick="location.href='/computer'">
+
+<head>
+  <title>12장기</title>
+  <meta charset="utf-8" />
+  <link rel="stylesheet" href="main.css?ver=1.1.1" />
+</head>
+
+<body>
+  <header>
+    <div class="site-title-nav">
+      <img class="title_img" src='./assets/1.png' alt="main_image" width="77" height="77">
+      <h1 class="site-title">
+        <a class="navbar-brand" href="localhost:3000"> 십 이 장 기 </a>
+      </h1>
+      <nav id="navbar">
+        <section>
+          <a href="/">
+            <span class="play">플레이</span>
+          </a>
+        </section>
+        <section>
+          <a href="/">
+            <span class="learn">배우기</span>
+          </a>
+        </section>
+        <section>
+          <a href="/">
+            <span class="tool">도구</span>
+          </a>
+        </section>
+      </nav>
+    </div>
+  </header>
+
+  <!-- <div id="main">
+    <img class="title_img" src='./assets/1.png' alt="main_image" width="150" height="150">
+    <div class="title">십 이 장 기</div>
+    <input type="button" id="startbtn" value="컴퓨터대전" onclick="location.href='/computer'">
+    <input type="button" id="startbtn" value="혼자놀기" onclick="location.href='./single'">
+    <input type="button" id="multibtn" value="멀티플레이 방만들기">
+    <input type="button" id="startbtn" value="게임설명" onclick="location.href='./rule'">
+    <p>
+      <a href='https://github.com/119wjw/janggi12' target='_blank' rel='noreferrer'>
+        <img src='./assets/GitHub-Mark-32px.png' width='32' height='32' alt='github_logo' />
+      </a>
+    </p>
+    <div>ver: 1.0.0 -alpha</div>
+  </div> -->
+  <div class="main-wrap">
+    <section class="game-mode">
+      <!-- <input type="button" id="startbtn" value="컴퓨터대전" onclick="location.href='/computer'"> -->
       <input type="button" id="startbtn" value="혼자놀기" onclick="location.href='./single'">
       <input type="button" id="multibtn" value="멀티플레이 방만들기">
       <input type="button" id="startbtn" value="게임설명" onclick="location.href='./rule'">
-    </p>
-    <a href='https://github.com/119wjw/janggi12' target='_blank' rel='noreferrer'>
-      <img src='./assets/GitHub-Mark-32px.png' width='32' height='32' alt='github_logo' />
-    </a>
-  </p>
-      <div>ver: 1.0.0 -alpha</div>
-      <script src="/socket.io/socket.io.js"></script>
-      <script src="multiplay.js"></script>
-    </div>
-  </body>
+    </section> 
+    <section class="game-room">
+      <div class="room-wrapper">
+        game-room
+      </div>
+    </section>
+    <section class="chat">
+      <div id="messages"></div>
+      <form id="form" action="">
+        <input id="input" autocomplete="off" /><button>Send</button>
+      </form>
+    </section>
+  </div>
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    //var socket = io();
+    var form = document.getElementById('form');
+    var input = document.getElementById('input');
+    var messages = document.getElementById('messages');
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      if (input.value) {
+        socket.emit('message', input.value);
+        input.value = '';
+      }
+    });
+
+    socket.on('message', function (msg) {
+      var item = document.createElement('li');
+      item.textContent = msg;
+      messages.appendChild(item);
+      window.scrollTo(0, document.body.scrollHeight);
+    });
+  </script>
+</body>
+
 </html>
