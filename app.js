@@ -32,26 +32,16 @@ app.use((err, req, res, next) => {
 //								socket								//
 //////////////////////////////////////////
 const io = require('socket.io')(http);
-const room = io.of('/room');
 
 io.on('connection', (socket) => {
-	console.log('socket 접속');
+	console.log('a user connected');
 
-	var room = null;
-
-	socket.on('join', (data) => {
-		room = data.room;
-		socket.join(room);
-		console.log(socket.rooms);
-		//socket.set('room', data.roomName);
-	});
-
-	socket.on('message', (data) => {
-		io.in(room).emit('message', data);
-		console.log(data);
+	socket.on('message', (msg) => {
+		io.emit('message', msg);
+		console.log('chat message', msg);
 	});
 
 	socket.on('disconnect', () => {
-		console.log('room namespace 해제');
+		console.log('user disconnected');
 	});
 });
