@@ -35,13 +35,15 @@ const io = require('socket.io')(http);
 
 io.on('connection', (socket) => {
 	console.log('a user connected');
-
+	io.emit('population', io.eio.clientsCount);
+	console.log(io.eio.clientsCount);
 	socket.on('message', (msg) => {
 		io.emit('message', msg);
 		console.log('chat message', msg);
 	});
 
 	socket.on('disconnect', () => {
+		io.emit('population', io.eio.clientsCount);
 		console.log('user disconnected');
 	});
 });
