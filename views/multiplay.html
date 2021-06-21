@@ -1,19 +1,52 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>12장기</title>
-    <meta charset="utf-8" />
-    <link rel="stylesheet" href="main.css" />
-  </head>
-  <body>
-      <div id = "main">
-        <img class="title_img" src='./assets/1.png' alt="main_image" width="150" height="150">
-        <div class="title">멀 티 플 레 이</div>
-        <input type="button" id="generateBtn" value="방만들기">
-        <input type="button" id="getInBtn" value="입장하기">
-        <!-- <div> url을 복사해서 상대방에게 보내주세요! </div> -->
-      <script src="/socket.io/socket.io.js"></script>
-      <script src="multiplay.js"></script>
-    </div>
-  </body>
+<head>
+  <title>12장기</title>
+  <meta charset="utf-8" />
+  <link rel="stylesheet" href="game.css?ver=1.1.1" />
+</head>
+<body>
+  <div class="wrap">
+    <canvas id="board" width="600" height="800">
+      지원하지 않는 버전입니다.
+    </canvas>
+    <canvas id="card" width="600" height="800">
+      지원하지 않는 버전입니다.
+    </canvas>
+    <section class="chat">
+      <div id="messages"></div>
+      <form id="form" action="">
+        <input id="input" autocomplete="off" /><button>Send</button>
+      </form>
+    </section>
+  </div>
+  <script src="single.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    var socket = io();
+    var url = window.location.href;
+    var id = url.split('=')[1];
+    
+    socket.emit('join', id);
+
+    socket.on('complete', (msg)=>{
+      console.log(msg);
+    })
+
+    socket.on('message', (msg)=> {
+      var item = document.createElement('li');
+      item.textContent = msg;
+      messages.appendChild(item)
+    })
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var msg = {roomId : id, data : input.value};
+      if (input.value) {
+        socket.emit('room-message', msg);
+        input.value = '';
+      }
+    });
+  </script>
+</body>
 </html>

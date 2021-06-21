@@ -56,12 +56,13 @@
     <section class="game-mode">
       <!-- <input type="button" id="startbtn" value="컴퓨터대전" onclick="location.href='/computer'"> -->
       <input type="button" id="startbtn" value="혼자놀기" onclick="location.href='./single'">
-      <input type="button" id="multibtn" value="멀티플레이 방만들기">
+      <input type="button" id="multibtn" value="멀티플레이 방만들기" onclick="create()">
       <input type="button" id="startbtn" value="게임설명" onclick="location.href='./rule'">
     </section> 
     <section class="game-room">
       <div class="room-wrapper">
         game-room
+        <div id="room-list"></div>
       </div>
     </section>
     <section class="chat">
@@ -78,6 +79,7 @@
     var input = document.getElementById('input');
     var messages = document.getElementById('messages');
     var population = document.getElementById('population');
+    var roomList = document.getElementById('room-list');
 
     form.addEventListener('submit', function (e) {
       e.preventDefault();
@@ -95,8 +97,23 @@
     });
 
     socket.on('population', function(msg){
-      population.innerText = msg;
+      population.textContent = msg;
     })
+
+    socket.on('onCreateRoom', function(msg){
+      var li = document.createElement('li');
+      li.textContent = msg;
+      li.onclick = function(){
+        window.location.href=`http://localhost:3000/room?id=${li.textContent}`;
+      }
+      roomList.appendChild(li);
+    })
+
+    function create() {
+      console.log(socket.id);
+      socket.emit('create', socket.id);
+      window.location.href=`http://localhost:3000/room?id=${socket.id}`;
+    }
   </script>
 </body>
 
