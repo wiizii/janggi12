@@ -33,21 +33,6 @@
       </nav>
     </div>
   </header>
-
-  <!-- <div id="main">
-    <img class="title_img" src='./assets/1.png' alt="main_image" width="150" height="150">
-    <div class="title">십 이 장 기</div>
-    <input type="button" id="startbtn" value="컴퓨터대전" onclick="location.href='/computer'">
-    <input type="button" id="startbtn" value="혼자놀기" onclick="location.href='./single'">
-    <input type="button" id="multibtn" value="멀티플레이 방만들기">
-    <input type="button" id="startbtn" value="게임설명" onclick="location.href='./rule'">
-    <p>
-      <a href='https://github.com/119wjw/janggi12' target='_blank' rel='noreferrer'>
-        <img src='./assets/GitHub-Mark-32px.png' width='32' height='32' alt='github_logo' />
-      </a>
-    </p>
-    <div>ver: 1.0.0 -alpha</div>
-  </div> -->
   <div class="main-wrap">
     <section>
       <p>현재인원</p>
@@ -58,6 +43,12 @@
       <input type="button" id="startbtn" value="혼자놀기" onclick="location.href='./single'">
       <input type="button" id="multibtn" value="멀티플레이 방만들기" onclick="create()">
       <input type="button" id="startbtn" value="게임설명" onclick="location.href='./rule'">
+      <p>
+        <a href='https://github.com/119wjw/janggi12' target='_blank' rel='noreferrer'>
+          <img src='./assets/GitHub-Mark-32px.png' width='32' height='32' alt='github_logo' />
+        </a>
+      </p>
+      <div>ver: 1.0.0 -alpha</div>
     </section> 
     <section class="game-room">
       <div class="room-wrapper">
@@ -89,6 +80,19 @@
       }
     });
 
+    socket.emit('get-room-info', (roomInfo) => {
+      console.log(roomInfo);
+      for(let i = 0; i<roomInfo.length; i++){
+        const {id, name} = roomInfo[i];
+        let li = document.createElement('li');
+        li.textContent = `id : ${id}, name : ${name}`;
+        li.onclick = function(){
+          window.location.href=`http://localhost:3000/room?id=${id}`;
+        }
+        roomList.appendChild(li);  
+      }
+    })
+
     socket.on('message', function (msg) {
       var item = document.createElement('li');
       item.textContent = msg;
@@ -100,7 +104,7 @@
       population.textContent = msg;
     })
 
-    socket.on('onCreateRoom', function(msg){
+    socket.on('update-room', function(msg){
       var li = document.createElement('li');
       li.textContent = msg;
       li.onclick = function(){
@@ -110,9 +114,9 @@
     })
 
     function create() {
-      console.log(socket.id);
-      socket.emit('create', socket.id);
-      window.location.href=`http://localhost:3000/room?id=${socket.id}`;
+      socket.emit('create-room', "roomNameHere", (roomId) => {
+        window.location.href=`http://localhost:3000/room?id=${roomId}`;
+      });
     }
   </script>
 </body>
