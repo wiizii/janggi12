@@ -44,29 +44,34 @@ module.exports = (server, app) => {
 		socket.on('join-room', (roomId, callback) => {
 			const room = rooms[roomId];
 			joinRoom(socket, room);
-
 			callback(socket.id);
-		});
-
-		socket.on('ready', () => {
-			console.log(socket.id, 'is ready!');
-			const room = rooms[socket.roomId];
-			//need two players
 			if (room.sockets.length == 2) {
-				for (const client of room.sockets) {
-					client.emit('init-game');
-				}
+				console.log('게임 시작');
+				let randomNum = Math.round(Math.random());
+				let color1 = randomNum ? 'g' : 'r';
+				let color2 = randomNum ? 'r' : 'g';
+				let [player1, player2] = room.sockets;
+				player1.emit('init-game', color1);
+				player2.emit('init-game', color2);
 			}
 		});
 
-		// socket.on('game-status', (status) => {
-		// 	io.to(userRooms[0]).emit('next-status', status);
-		// });
+		socket.on('game-play', (status) => {
+			if (status.catch === 'g0' || status.catch === 'r0') {
+				status.turn = -1;
+				io.to(socket.roomId).emit('next-status', status);
+			} else {
+				io.to(socket.roomId).emit('next-status', status);
+			}
+		});
 
 		socket.on('disconnect', () => {
 			if (socket.roomId !== undefined) {
+				console.log('test');
 				const roomId = socket.roomId;
-				if (rooms[roomId].sockets.length === 1) {
+				let idx = rooms[roomId].sockets.indexOf(socket);
+				rooms[roomId].sockets.splice(idx, 1);
+				if (rooms[roomId].sockets.length === 0) {
 					console.log('have to remove room');
 					delete rooms[roomId];
 				}

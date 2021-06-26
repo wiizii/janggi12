@@ -81,6 +81,7 @@
     });
 
     socket.emit('get-room-info', (roomInfo) => {
+      console.log("test");
       console.log(roomInfo);
       for(let i = 0; i<roomInfo.length; i++){
         const {id, name} = roomInfo[i];
