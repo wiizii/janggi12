@@ -109,14 +109,14 @@
       var li = document.createElement('li');
       li.textContent = msg;
       li.onclick = function(){
-        window.location.href=`http://localhost:3000/room?id=${li.textContent}`;
+        window.location.href=`http://172.30.1.16:3000/room?id=${li.textContent}`;
       }
       roomList.appendChild(li);
     })
 
     function create() {
       socket.emit('create-room', "roomNameHere", (roomId) => {
-        window.location.href=`http://localhost:3000/room?id=${roomId}`;
+        window.location.href=`http://172.30.1.16:3000/room?id=${roomId}`;
       });
     }
   </script>
