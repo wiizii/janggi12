@@ -1,6 +1,6 @@
 # Janggi12
 
-v1.0.1-alpha
+v1.1.0-beta
 
 ## play
 
@@ -21,5 +21,4 @@ update중.. 조금만 기다려주세요!
 ## 추가예정
 
 1. play with computer. //with use Alpha–beta pruning https://ko.wikipedia.org/wiki/%EC%95%8C%ED%8C%8C-%EB%B2%A0%ED%83%80_%EA%B0%80%EC%A7%80%EC%B9%98%EA%B8%B0
-2. multiplay
-3. use A.I
+2. use A.I
