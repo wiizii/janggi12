@@ -177,6 +177,17 @@ export class GameManager {
 	}
 
 	initGame() {
+		for (let i = 0; i < 4; i++) {
+			for (let j = 0; j < 3; j++) {
+				if (this.tile[i][j].firstChild !== null) this.tile[i][j].removeChild(this.tile[i][j].firstChild);
+			}
+		}
+
+		for (let i = 0; i < 6; i++) {
+			if (this.poro_tile_green[i].firstChild !== null) this.poro_tile_green[i].removeChild(this.poro_tile_green[i].firstChild);
+			if (this.poro_tile_red[i].firstChild !== null) this.poro_tile_red[i].removeChild(this.poro_tile_red[i].firstChild);
+		}
+
 		this.tile[0][0].appendChild(makeTile('r1'));
 		this.tile[0][1].appendChild(makeTile('r0'));
 		this.tile[0][2].appendChild(makeTile('r2'));

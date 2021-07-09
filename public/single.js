@@ -88,6 +88,19 @@ function poroUndraw(team, i) {
 	else ctx_card.clearRect(redPoro[i].x, redPoro[i].y, poroSize, poroSize);
 }
 
+let cards = {
+	1: 'g0',
+	2: 'g1',
+	3: 'g2',
+	4: 'g3',
+	5: 'g4',
+	6: 'r0',
+	7: 'r1',
+	8: 'r2',
+	9: 'r3',
+	10: 'r4',
+};
+
 function drawCard(r, c) {
 	if (board[r][c].card == 0) return;
 	var img = new Image();
@@ -96,7 +109,8 @@ function drawCard(r, c) {
 	img.onload = function () {
 		ctx_card.drawImage(img, cardX, cardY, cardSize, cardSize);
 	};
-	img.src = './assets/' + (board[r][c].card + '') + '.png';
+	let card;
+	img.src = './assets/' + cards[board[r][c].card] + '.png';
 }
 
 function drawPoro(poro) {
@@ -110,7 +124,7 @@ function drawPoro(poro) {
 			img.onload = function () {
 				ctx_card.drawImage(img, x, y, poroSize, poroSize);
 			};
-			img.src = './assets/' + (card + '') + '.png';
+			img.src = './assets/' + cards[card] + '.png';
 			console.log();
 		})(i);
 	}

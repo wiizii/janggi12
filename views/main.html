@@ -5,63 +5,113 @@
   <title>12장기</title>
   <meta charset="utf-8" />
   <link rel="stylesheet" href="main.css?ver=1.1.1" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
 
 <body>
   <header>
-    <div class="site-title-nav">
-      <img class="title_img" src='./assets/g0.png' alt="main_image" width="77" height="77">
-      <h1 class="site-title">
-        <a class="navbar-brand" href="localhost:3000"> 십 이 장 기 </a>
-      </h1>
-      <nav id="navbar">
-        <section>
-          <a href="/">
-            <span class="play">플레이</span>
-          </a>
-        </section>
-        <section>
-          <a href="/">
-            <span class="learn">배우기</span>
-          </a>
-        </section>
-        <section>
-          <a href="/">
-            <span class="tool">도구</span>
-          </a>
-        </section>
-      </nav>
-    </div>
+
+    <nav class="navbar navbar-expand-sm bg-dark">
+      <a class="navbar-brand" href="/">
+        <div class="d-flex text-white">
+          <img src="./assets/g0.png" alt="Logo" style="width:40px;margin-right:10px;">
+          <h3>십이장기</h3>
+        </div>
+      </a>
+
+      <!-- <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" href="#">배우기</a>
+      </li>
+    </ul> -->
+    </nav>
+
   </header>
-  <div class="main-wrap">
-    <section>
-      <p>현재인원</p>
-      <p id="population">0</p>
-    </section>
-    <section class="game-mode">
-      <!-- <input type="button" id="startbtn" value="컴퓨터대전" onclick="location.href='/computer'"> -->
-      <input type="button" id="startbtn" value="혼자놀기" onclick="location.href='./single'">
-      <input type="button" id="multibtn" value="멀티플레이 방만들기" onclick="create()">
-      <input type="button" id="startbtn" value="게임설명" onclick="location.href='./rule'">
-      <p>
-        <a href='https://github.com/119wjw/janggi12' target='_blank' rel='noreferrer'>
-          <img src='./assets/GitHub-Mark-32px.png' width='32' height='32' alt='github_logo' />
-        </a>
-      </p>
-      <div>ver: 1.0.0 -alpha</div>
-    </section> 
-    <section class="game-room">
-      <div class="room-wrapper">
-        game-room
-        <div id="room-list"></div>
+  <div class="container-fluid" style="margin:5%;">
+    <div class="row">
+      <div class="col-md-3">
+        <section class="game-mode">
+          <div class="btn-group-vertical" style="height: 150px; width : 300px">
+            <!-- <input type="button" id="startbtn" value="컴퓨터대전" onclick="location.href='/computer'"> -->
+            <button type="button" class="btn btn-outline-dark" onclick="location.href='./single'">혼자 연습하기</button>
+            <button type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#myModal">멀티플레이 방만들기</button>
+            <button type="button" class="btn btn-outline-dark" onclick="location.href='./rule'">게임설명</button>
+
+              <!-- The Modal -->
+              <div class="modal fade" id="myModal">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+              
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                      <h4 class="modal-title">방만들기</h4>
+                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+              
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                      <div class="form-group">
+                        <label for="room-name">방 이름(최대 10글자)</label>
+                        <input type="text" class="form-control" id="room-name" maxlength="10">
+                      </div>
+                    </div>
+              
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="create()">확인</button>
+                    </div>
+              
+                  </div>
+                </div>
+              </div>
+
+          </div>
+        </section>
+        <section>
+          <div class="container d-flex" style="margin-top: 5%; font-weight: 600;">
+            <p>현재접속인원 :&nbsp;</p>
+            <p id="population">0</p>
+          </div>
+        </section>
+        <section>
+          <div class="container" style="margin-top:50px;">
+            <a href='https://github.com/wiizii/janggi12' target='_blank' rel='noreferrer'>
+              <img src='./assets/GitHub-Mark-32px.png' width='32' height='32' alt='github_logo' />
+              <span style="font-style: italic;"> Made By wizi</span>
+            </a>
+            <div>ver. 1.1.0 beta</div>
+          </div>
+        </section>
       </div>
-    </section>
-    <section class="chat">
-      <div id="messages"></div>
-      <form id="form" action="">
-        <input id="input" autocomplete="off" /><button>Send</button>
-      </form>
-    </section>
+      <div class="col-md-5">
+        <section class="game-room container">
+          <table class="table" style="text-align: center; border: 1px solid black;">
+            <thead class="thead-dark">
+              <tr>
+                <th style="width: 100px;">방 번호</th>
+                <th style="width: 300px">방 이름</th>
+                <th style="width: 100px">입장</th>
+              </tr>
+            </thead>
+            <tbody id="room-list">
+            </tbody>
+          </table>
+        </section>
+      </div>
+      <div class="col-md-3">
+        <section class="chat container" style="width: 400px;">
+          <div id="messages"
+            style="width : 100%; height: 400px; border : 1px solid black; overflow:scroll; padding: 10px;"></div>
+          <form class="d-flex form-group" id="form">
+            <input type="message" class="form-control" id="input" autocomplete="off" /><button
+              class="btn btn-outline-dark">send</button>
+          </form>
+        </section>
+      </div>
+    </div>
   </div>
   <script src="/socket.io/socket.io.js"></script>
   <script>
@@ -80,45 +130,73 @@
       }
     });
 
-    socket.emit('get-room-info', (roomInfo) => {
-      console.log("test");
-      console.log(roomInfo);
-      for(let i = 0; i<roomInfo.length; i++){
-        const {id, name} = roomInfo[i];
-        let li = document.createElement('li');
-        li.textContent = `id : ${id}, name : ${name}`;
-        li.onclick = function(){
-          window.location.href=`http://localhost:3000/room?id=${id}`;
-        }
-        roomList.appendChild(li);  
-      }
-    })
+    function getRoomInfo() {
+        socket.emit('get-room-info', (roomInfo) => {
+
+          while(roomList.hasChildNodes()){
+            roomList.removeChild(roomList.firstChild);
+          }
+          
+          for (let i = 0; i < roomInfo.length; i++) {
+            const { id, name, population } = roomInfo[i];
+            
+            let tr = document.createElement('tr');
+            let td1 = document.createElement('td');
+            let td2 = document.createElement('td');
+            let td3 = document.createElement('td');
+
+            td1.textContent = id;
+            td2.textContent = name;
+            if(population === 1){
+              td3.classList.add("text-primary");
+              td3.textContent = "가능";
+              tr.onclick = function () {
+                window.location.href = `http://localhost:3000/room?id=${id}`;
+              }
+            }
+            else{
+              td3.classList.add("text-danger");
+              td3.textContent = "불가";
+            }
+
+            tr.appendChild(td1);
+            tr.appendChild(td2);
+            tr.appendChild(td3);
+
+
+            roomList.appendChild(tr);
+          }
+        })
+    };
 
     socket.on('message', function (msg) {
-      var item = document.createElement('li');
-      item.textContent = msg;
+      let item = document.createElement('li');
+      item.textContent = "익명 : " + msg;
       messages.appendChild(item);
-      //window.scrollTo(0, document.body.scrollHeight);
+      messages.scrollTop = messages.scrollHeight;
     });
 
-    socket.on('population', function(msg){
+    socket.on('population', function (msg) {
       population.textContent = msg;
-    })
-
-    socket.on('update-room', function(msg){
-      var li = document.createElement('li');
-      li.textContent = msg;
-      li.onclick = function(){
-        window.location.href=`http://172.30.1.16:3000/room?id=${li.textContent}`;
-      }
-      roomList.appendChild(li);
-    })
+    });
 
     function create() {
-      socket.emit('create-room', "roomNameHere", (roomId) => {
-        window.location.href=`http://172.30.1.16:3000/room?id=${roomId}`;
+      let modalData = document.getElementById("room-name");
+      let roomName = modalData.value;
+      modalData.value = "";
+      socket.emit('create-room', roomName, (roomId) => {
+        window.location.href = `http://localhost:3000/room?id=${roomId}`;
       });
     }
+
+    function setIntervalImmediately(func, interval) {
+      func();
+      return setInterval(func, interval);
+    }
+
+    setIntervalImmediately(getRoomInfo, 5000);
+
+
   </script>
 </body>
 
