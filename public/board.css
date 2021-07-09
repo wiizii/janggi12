@@ -1,3 +1,7 @@
+li {
+	list-style: none;
+}
+
 .board {
 	display: grid;
 	grid-template-columns: repeat(3, 1fr);
@@ -8,7 +12,6 @@
 }
 .tile {
 	display: flex;
-	width: 100px;
 	height: 100px;
 	border-color: black;
 	border-style: solid;
