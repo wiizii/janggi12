@@ -19,7 +19,7 @@ module.exports = (server, app) => {
 		});
 
 		socket.on('room-message', (msg) => {
-			io.to(msg.roomId).emit('message', msg.data);
+			io.to(rooms[msg.roomId].sockets[0].roomId).emit('room-message', msg);
 		});
 
 		socket.on('create-room', (roomName, callback) => {
@@ -36,21 +36,29 @@ module.exports = (server, app) => {
 		socket.on('get-room-info', (callback) => {
 			let roomInfo = [];
 			for (const id in rooms) {
-				roomInfo.push({ id: rooms[id].id, name: rooms[id].name });
+				roomInfo.push({ id: rooms[id].id, name: rooms[id].name, population: rooms[id].sockets.length });
 			}
 			callback(roomInfo);
 		});
 
-		socket.on('join-room', (roomId, callback) => {
+		socket.on('join-room', (roomId) => {
 			const room = rooms[roomId];
-			joinRoom(socket, room);
-			callback(socket.id);
 			if (room.sockets.length == 2) {
-				console.log('게임 시작');
+				//추후 alert로 수정 예정
+				return;
+			}
+			joinRoom(socket, room);
+			if (room.sockets.length == 2) {
 				let randomNum = Math.round(Math.random());
 				let color1 = randomNum ? 'g' : 'r';
 				let color2 = randomNum ? 'r' : 'g';
+				let msg = {
+					data: '게임이 시작되었습니다.',
+					color: 'system',
+				};
 				let [player1, player2] = room.sockets;
+				player1.emit('room-message', msg);
+				player2.emit('room-message', msg);
 				player1.emit('init-game', color1);
 				player2.emit('init-game', color2);
 			}
@@ -67,12 +75,19 @@ module.exports = (server, app) => {
 
 		socket.on('disconnect', () => {
 			if (socket.roomId !== undefined) {
-				console.log('test');
 				const roomId = socket.roomId;
+
+				//상대방 나가는 로직
+				let msg = {
+					data: '상대방이 나갔습니다.',
+					color: 'system',
+				};
+				io.to(roomId).emit('room-message', msg);
+
+				//방 제거 로직
 				let idx = rooms[roomId].sockets.indexOf(socket);
 				rooms[roomId].sockets.splice(idx, 1);
 				if (rooms[roomId].sockets.length === 0) {
-					console.log('have to remove room');
 					delete rooms[roomId];
 				}
 			}
