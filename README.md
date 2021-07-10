@@ -4,7 +4,7 @@ TV프로그램 "더 지니어스"에서 소개된 "12장기"게임입니다.
 
 ## play
 
-http://janggi12.online
+http://www.janggi12.online
 
 위에있는 주소에서 플레이 해보세요!
 
