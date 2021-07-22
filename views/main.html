@@ -4,6 +4,7 @@
 <head>
   <title>12장기</title>
   <meta charset="utf-8" />
+  <meta name="google-site-verification" content="ggDEoUS5A0l4r_hYmouHqpt6BMlW6lENuwdv4CKGnNE" />
   <link rel="stylesheet" href="main.css?ver=1.1.1" />
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -151,7 +152,7 @@
               td3.classList.add("text-primary");
               td3.textContent = "가능";
               tr.onclick = function () {
-                window.location.href = `http://localhost:3000/room?id=${id}`;
+                window.location.href = `/room?id=${id}`;
               }
             }
             else{
@@ -185,7 +186,7 @@
       let roomName = modalData.value;
       modalData.value = "";
       socket.emit('create-room', roomName, (roomId) => {
-        window.location.href = `http://localhost:3000/room?id=${roomId}`;
+        window.location.href = `/room?id=${roomId}`;
       });
     }
 

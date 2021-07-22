@@ -11,7 +11,7 @@ module.exports = (server, app) => {
 	let rooms = {};
 
 	io.on('connection', (socket) => {
-		console.log('a user connected');
+		//console.log('a user connected');
 		io.emit('population', io.eio.clientsCount);
 
 		socket.on('message', (msg) => {
@@ -92,7 +92,7 @@ module.exports = (server, app) => {
 				}
 			}
 			io.emit('population', io.eio.clientsCount);
-			console.log('a user disconnected');
+			//console.log('a user disconnected');
 		});
 	});
 
