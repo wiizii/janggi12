@@ -6,8 +6,6 @@ import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter @Setter
@@ -28,4 +26,5 @@ public class Player {
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
+
 }
