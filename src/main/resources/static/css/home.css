@@ -1,0 +1,45 @@
+.navbar{
+    background-color: var(--color-primary);
+}
+
+.navbar__logo {
+    display: flex;
+    align-items: center;
+    margin: 0 0 0 10px;
+    height: 64px;
+}
+
+.navbar__logo__title {
+    font-size: 24px;
+    color: var(--color-white);
+    font-weight: bold;
+}
+
+.lobby {
+    display: flex;
+    margin : 60px 10%;
+}
+
+.lobby__start__button {
+    cursor : pointer;
+    background-color: var(--color-white);
+    color: var(--color-primary);
+    border: 1px solid var(--color-primary);
+    display: flex;
+    font-weight: bold;
+    width: 240px;
+    height: 62px;
+    align-items: center;
+    justify-content: center;
+}
+
+.lobby__start > a:nth-child(2) > div {
+    border-top: 0;
+    border-bottom: 0;
+}
+
+.lobby__start__button:hover {
+    background-color: var(--color-primary);
+    color: var(--color-white);
+    transition: all 0.4s;
+}
