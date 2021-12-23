@@ -112,3 +112,17 @@
 .lobby__participants table tbody tr:nth-child(2n+1) {
     background-color: var(--color-white);
 }
+
+.lobby__message {
+    width: 300px;
+}
+
+.lobby__message__list {
+    border: 1px solid var(--color-grey);
+    height: 300px;
+    overflow: auto;
+}
+
+.lobby__message__list > p {
+    padding: 4px 4px;
+}
