@@ -91,6 +91,10 @@
     height: 32px;
 }
 
+.lobby__population {
+    margin: 10px 0;
+}
+
 .lobby__participants__info span {
     width: 150px;
     text-align: center;
