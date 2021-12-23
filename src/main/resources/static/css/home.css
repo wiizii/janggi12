@@ -55,18 +55,57 @@
     align-items: center;
 }
 
-.lobby__gameroom {
-    width: 600px;
-    height: 400px;
-    border: 1px solid var(--color-grey);
-    overflow: auto;
-}
-
-.lobby__gameroom__thead {
+.lobby__gameroom__info {
+    display: flex;
     background-color: var(--color-primary);
     color: var(--color-white);
+    font-weight: bold;
+    width: 602px;
     height: 32px;
-    width: 100%;
+    align-items: center;
+}
+
+.lobby__gameroom__info span {
+    text-align: center;
+}
+
+.lobby__gameroom__info span:nth-child(1) {
+    width: 100px;
+}
+
+.lobby__gameroom__info span:nth-child(2) {
+    width: 300px;
+}
+
+.lobby__gameroom__info span:nth-child(3) {
+    width: 100px;
+}
+
+.lobby__gameroom__info span:nth-child(4) {
+    width: 100px;
+}
+
+.lobby__gameroom__list {
+    width: 600px;
+    height: 500px;
+    overflow: auto;
+    border: 1px solid var(--color-grey);
+}
+
+.lobby__gameroom table tbody tr th:nth-child(1) {
+    width: 100px;
+}
+
+.lobby__gameroom table tbody tr th:nth-child(2) {
+    width: 300px;
+}
+
+.lobby__gameroom table tbody tr th:nth-child(3) {
+    width: 100px;
+}
+
+.lobby__gameroom table tbody tr th:nth-child(4) {
+    width: 100px;
 }
 
 .lobby__gameroom tbody tr:nth-child(2n) {
