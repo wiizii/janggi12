@@ -18,6 +18,7 @@
 .lobby {
     display: flex;
     margin : 60px 10%;
+    justify-content: space-between;
 }
 
 .lobby__start__button {
@@ -42,4 +43,40 @@
     background-color: var(--color-primary);
     color: var(--color-white);
     transition: all 0.4s;
+}
+
+.lobby__population {
+    display: flex;
+    font-weight: bold;
+}
+
+.lobby__github {
+    display: flex;
+    align-items: center;
+}
+
+.lobby__gameroom {
+    width: 600px;
+    height: 400px;
+    border: 1px solid var(--color-grey);
+    overflow: auto;
+}
+
+.lobby__gameroom table {
+    border-collapse: collapse;
+}
+
+.lobby__gameroom__thead {
+    background-color: var(--color-primary);
+    color: var(--color-white);
+    height: 32px;
+    width: 100%;
+}
+
+.lobby__gameroom tbody tr:nth-child(2n) {
+    background-color: var(--color-grey);
+}
+
+.lobby__gameroom tbody tr:nth-child(2n+1) {
+    background-color: var(--color-white);
 }

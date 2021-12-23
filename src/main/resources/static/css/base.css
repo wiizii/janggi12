@@ -6,3 +6,7 @@ body {
 a {
     text-decoration-line: none;
 }
+
+th {
+    height: 32px;
+}
