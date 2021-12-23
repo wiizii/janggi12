@@ -62,10 +62,6 @@
     overflow: auto;
 }
 
-.lobby__gameroom table {
-    border-collapse: collapse;
-}
-
 .lobby__gameroom__thead {
     background-color: var(--color-primary);
     color: var(--color-white);
@@ -78,5 +74,41 @@
 }
 
 .lobby__gameroom tbody tr:nth-child(2n+1) {
+    background-color: var(--color-white);
+}
+
+.lobby__participants {
+    width: 300px;
+    border: 1px solid var(--color-grey);
+}
+
+.lobby__participants__info {
+    display: flex;
+    background-color: var(--color-primary);
+    color: var(--color-white);
+    align-items: center;
+    font-weight: bold;
+    height: 32px;
+}
+
+.lobby__participants__info span {
+    width: 150px;
+    text-align: center;
+}
+
+.lobby__participants__list {
+    height: 200px;
+    overflow: auto;
+}
+
+.lobby__participants__list table tbody tr th{
+    width: 150px;
+}
+
+.lobby__participants table tbody tr:nth-child(2n) {
+    background-color: var(--color-grey);
+}
+
+.lobby__participants table tbody tr:nth-child(2n+1) {
     background-color: var(--color-white);
 }

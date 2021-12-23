@@ -7,6 +7,10 @@ a {
     text-decoration-line: none;
 }
 
+table {
+    border-collapse: collapse;
+}
+
 th {
     height: 32px;
 }
