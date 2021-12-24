@@ -14,7 +14,7 @@
     <div>
 
         <div class="lobby__start">
-            <div class="lobby__start__button">멀티플레이 방만들기</div>
+            <div id="create__room__button" class="lobby__start__button">멀티플레이 방만들기</div>
             <a href="/single"><div class="lobby__start__button">혼자 연습하기</div></a>
             <a href="/rule"><div class="lobby__start__button">게임설명</div></a>
         </div>
@@ -268,33 +268,27 @@
 
 </div>
 
-<!--                    &lt;!&ndash; The Modal &ndash;&gt;-->
-<!--                    <div class="modal fade" id="myModal">-->
-<!--                        <div class="modal-dialog">-->
-<!--                            <div class="modal-content">-->
+<div id="create__room__modal" class="modal">
+    <div class="modal__content modal__createroom">
+        <div class="modal__title">
+            <span>방만들기</span>
+            <span id="modal__close__btn" class="modal__close__btn">&times;</span>
+        </div>
+        <form class="modal__form">
+            <div class="modal__form__title">
+                <p>방 이름</p>
+                <input type="text" name="title" maxlength="10" placeholder="최대 10글자" required>
+            </div>
+            <div class="modal__form__open">
+                <input type="checkbox" name="open" value="false">
+                <span>비공개</span>
+            </div>
+            <button type="submit">생성</button>
+        </form>
+    </div>
+</div>
 
-<!--                                &lt;!&ndash; Modal Header &ndash;&gt;-->
-<!--                                <div class="modal-header">-->
-<!--                                    <h4 class="modal-title">방만들기</h4>-->
-<!--                                    <button type="button" class="close" data-dismiss="modal">&times;</button>-->
-<!--                                </div>-->
-
-<!--                                &lt;!&ndash; Modal body &ndash;&gt;-->
-<!--                                <div class="modal-body">-->
-<!--                                    <div class="form-group">-->
-<!--                                        <label for="room-name">방 이름(최대 10글자)</label>-->
-<!--                                        <input type="text" class="form-control" id="room-name" maxlength="10">-->
-<!--                                    </div>-->
-<!--                                </div>-->
-
-<!--                                &lt;!&ndash; Modal footer &ndash;&gt;-->
-<!--                                <div class="modal-footer">-->
-<!--                                    <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="create()">확인</button>-->
-<!--                                </div>-->
-
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                    </div>-->
+<script type="module" src="/js/home.js"></script>
 
 </body>
 </html>

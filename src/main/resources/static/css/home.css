@@ -169,3 +169,57 @@
 .lobby__message__list > p {
     padding: 2px 4px;
 }
+
+.modal__createroom {
+    background-color: var(--color-white);
+    width: 400px;
+    height: 300px;
+    box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+}
+
+.modal__title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--color-primary);
+    color: var(--color-white);
+    height: 62px;
+    padding: 0 20px;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.modal__form {
+    display: flex;
+    flex-direction: column;
+    height: 250px;
+    padding: 20px;
+}
+
+.modal__close__btn {
+    cursor: pointer;
+}
+
+.modal__form p {
+    font-size: 18px;
+}
+
+.modal__form__title input {
+
+    width: 100%;
+}
+
+.modal__form__open {
+    display: flex;
+    align-items: center;
+    justify-content: end;
+}
+
+.modal__form__open input{
+    width: 18px;
+}
+
+.modal__form button {
+    height: 32px;
+    margin: 80px 0 0 0;
+}
