@@ -245,22 +245,10 @@
 
         <div class="lobby__message">
             <div id="messages" class="lobby__message__list">
-                <p>wizi: test</p>
-                <p>wizi: test</p>
-                <p>wizi: test</p>
-                <p>wizi: test</p>
-                <p>wizi: test</p>
-                <p>wizi: test</p>
-                <p>wizi: test</p>
-                <p>wizi: test</p>
-                <p>wizi: test</p>
-                <p>wizi: test</p>
-                <p>wizi: test</p>
-                <p>wizi: test</p>
             </div>
             <form id="form">
-                <input type="text" id="input" maxlength="60" placeholder="메세지입력 (최대60자)" autocomplete="off" />
-                <button type="submit">보내기</button>
+                <input type="text" id="chat__input" maxlength="60" placeholder="메세지입력 (최대60자)" autocomplete="off"/>
+                <button id="chat__submit__btn" type="submit">보내기</button>
             </form>
         </div>
 
@@ -289,6 +277,8 @@
 </div>
 
 <script type="module" src="/js/home.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
 
 </body>
 </html>

@@ -2,6 +2,7 @@
     --color-primary: #343a40;
     --color-white: #ffffff;
     --color-grey: #d9d9d9;
+    --color-admin: #456dd9;
 }
 
 .modal {
@@ -26,4 +27,8 @@
     z-index: 1;
 }
 
-
+.message--admin {
+    font-weight: bold;
+    color: var(--color-admin);
+    text-align: center;
+}
