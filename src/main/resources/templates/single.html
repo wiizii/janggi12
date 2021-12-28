@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/head :: head">
+</head>
+
+<body>
+
+<header th:replace="fragments/header :: header">
+</header>
+
+<div class="wrap">
+    <canvas id="board" width="600" height="800">
+        지원하지 않는 버전입니다.
+    </canvas>
+    <canvas id="card" width="600" height="800">
+        지원하지 않는 버전입니다.
+    </canvas>
+</div>
+<script src="/js/single.js"></script>
+</body>
+
+</html>
